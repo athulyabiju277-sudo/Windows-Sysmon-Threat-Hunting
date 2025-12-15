@@ -1,0 +1,140 @@
+Windows Threat Hunting Notes – Sysmon Lab
+
+Analyst: analyst
+Tool: Sysmon
+Log Source: Microsoft-Windows-Sysmon/Operational
+
+
+Phase 1: Baseline Observation (Normal Behavior)
+
+
+Event ID: 1 (Process Creation)
+Process: notepad.exe
+Image Path: C:\Windows\System32\notepad.exe
+Parent Process: explorer.exe
+User: analyst
+
+Observation:
+Notepad was launched directly by explorer.exe, which represents
+normal user-initiated behavior.
+
+Analysis:
+This parent-child relationship is expected in a standard Windows
+environment. No abnormal indicators were observed.
+
+Verdict:
+Legitimate user-launched process.
+No suspicious behavior detected.
+
+
+Phase 2: Detection Preparation
+
+Action Taken:
+Sysmon was installed and configured to monitor detailed endpoint
+telemetry.
+
+Key Logging Enabled:
+- Event ID 1: Process Creation
+- Event ID 13: Registry Value Modification
+
+Purpose:
+To enable visibility into execution behavior and persistence
+mechanisms commonly used by attackers.
+
+
+Phase 3: Suspicious Execution Detected
+
+
+Sysmon Event ID: 1 (Process Creation)
+
+Parent Process: powershell.exe
+Child Process: notepad.exe
+Image Path: C:\Windows\System32\notepad.exe
+User: analyst
+
+Observation:
+Notepad was launched by powershell.exe instead of explorer.exe.
+
+Analysis:
+PowerShell spawning a child process deviates from normal user
+behavior. PowerShell is a legitimate administrative tool but is
+frequently abused by attackers as a Living-Off-The-Land Binary
+(LOLBin) to execute payloads and evade detection.
+
+This execution pattern aligns with techniques commonly observed
+in malware and post-exploitation activity.
+
+Verdict:
+Suspicious execution behavior detected.
+Activity confirmed benign as part of a controlled lab simulation.
+
+
+Phase 4: Persistence Simulation
+
+
+Action Taken:
+A registry Run key entry was created to simulate persistence.
+
+Registry Path:
+HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+
+Value Name:
+TestPersistence
+
+Value Data:
+C:\Windows\System32\notepad.exe
+
+Purpose:
+To simulate a persistence mechanism that ensures execution on
+user logon, a technique widely used by malware.
+
+
+Phase 5: Persistence Detection
+
+
+Sysmon Event ID: 13 (Registry Value Set)
+
+Target Object:
+HKCU\Software\Microsoft\Windows\CurrentVersion\Run\TestPersistence
+
+Observation:
+A new registry value was created in the Run key.
+
+Analysis:
+The Run key is a well-known persistence location abused by
+attackers to maintain access across reboots or logons.
+
+Verdict:
+Persistence mechanism detected.
+Activity confirmed benign as part of controlled simulation.
+
+
+Phase 6: Attack Chain Correlation
+
+Correlated Events:
+- Event ID 1: PowerShell spawning Notepad (Execution)
+- Event ID 13: Run key modification (Persistence)
+
+Attack Chain:
+Execution → Persistence
+
+Analysis:
+The sequence of suspicious execution followed by registry-based
+persistence matches a common attacker kill chain.
+
+This correlation confirms intentional behavior rather than
+isolated events.
+
+
+Phase 7: Cleanup and Closure
+
+
+Action Taken:
+The registry persistence entry was removed after analysis.
+
+Final Assessment:
+All detected activity was part of a controlled threat-hunting
+exercise. No real malware was present.
+
+System Status:
+Clean and restored to safe state.

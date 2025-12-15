@@ -1,0 +1,75 @@
+Windows Threat Hunting Lab Using Sysmon Logs
+
+Introduction
+This report documents a Windows threat hunting lab conducted using Sysmon.
+The goal of this project was to simulate attacker-like behavior in a safe
+environment and detect it using endpoint logs, similar to real SOC operations.
+
+Objective
+The objective of this investigation was to:
+- Detect suspicious process execution
+- Identify persistence mechanisms
+- Correlate multiple Sysmon events into an attack chain
+- Practice SOC-style investigation and documentation
+
+Lab Environment
+- Virtualization Platform: Oracle VirtualBox
+- Guest Operating System: Windows 10
+- Monitoring Tool: Sysmon
+- Log Analysis Tool: Windows Event Viewer
+- Network Mode: Isolated lab environment
+
+Threat Simulation
+The following attacker-like activities were safely simulated:
+
+1. Suspicious Execution
+PowerShell was used to launch Notepad, creating an abnormal parent-child
+process relationship.
+
+2. Persistence Mechanism
+A registry Run key entry was created to simulate persistence, a technique
+commonly used by malware.
+
+Detection and Analysis
+
+Event ID 1 – Process Creation
+Sysmon Event ID 1 showed that powershell.exe spawned notepad.exe.
+This behavior is suspicious because Notepad is usually launched
+by explorer.exe.
+
+Event ID 13 – Registry Modification
+Sysmon Event ID 13 detected a registry value being set in:
+HKCU\Software\Microsoft\Windows\CurrentVersion\Run.
+This indicates a persistence attempt.
+
+Attack Chain Correlation
+The detected events were correlated into the following attack chain:
+
+- Execution: PowerShell spawning Notepad (Event ID 1)
+- Persistence: Registry Run key modification (Event ID 13)
+
+This sequence matches a common attacker kill chain where execution
+is followed by persistence to maintain access.
+
+Incident Response and Cleanup
+The detected activity was confirmed to be part of a controlled simulation.
+The registry persistence entry was removed, and the system was restored
+to a clean state following proper incident response practices.
+
+Conclusion
+This project successfully demonstrated endpoint threat hunting using Sysmon.
+By analyzing process execution and registry activity, a suspicious attack
+chain was identified and documented. This reflects real-world SOC workflows.
+
+Skills Gained
+- Windows threat hunting
+- Sysmon configuration and tuning
+- Log analysis using Event Viewer
+- Registry analysis
+- Attack chain correlation
+- SOC-style documentation
+
+Future Improvements
+- Forward Sysmon logs to a SIEM
+- Create automated detection rules
+- Map detections to MITRE ATT&CK
