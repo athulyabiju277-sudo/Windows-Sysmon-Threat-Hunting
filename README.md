@@ -43,7 +43,7 @@ This represents normal user activity.
 - Child Process: `notepad.exe`  
 
   
-![Event ID 1](Screenshots/05_eventid1_suspicious_powershell_notepad.png)
+![Event ID 1](screenshots1/05_eventid1_suspicious_powershell_notepad.png.png)
 
  **Analysis:**  
 This behavior is suspicious because Notepad is typically launched by `explorer.exe`.  
