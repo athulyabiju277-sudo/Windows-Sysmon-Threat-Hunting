@@ -58,7 +58,7 @@ This pattern is commonly associated with **Living-Off-The-Land Binaries (LOLbins
   `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`
 
   
-![Event ID 13](Screenshots/06_eventid13_registry_persistence.png)
+![Event ID 13](screenshots1/06_eventid13_registry_persistence.png.png)
 
  **Analysis:**  
 The Run key is a well-known persistence mechanism used by attackers to maintain execution after system reboot or user login.
