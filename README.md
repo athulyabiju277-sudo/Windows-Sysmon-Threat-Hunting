@@ -146,5 +146,3 @@ Windows-Sysmon-Threat-Hunting
 
 ---
 
-## 📂 Project Link
-👉 https://github.com/YOUR_USERNAME/Windows-Sysmon-Threat-Hunting
